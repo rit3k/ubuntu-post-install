@@ -65,16 +65,12 @@ echo ''
 echo 'Installing selected favourite applications...'
 echo ''
 echo 'Current package list:
-darktable
 easytag
 filezilla
-gnome-tweak-tool
 gpick
 grsync
 nautilus-dropbox
-nautilus-open-terminal
 pyrenamer
-sparkleshare
 xchat
 vlc'
 echo ''
@@ -84,7 +80,7 @@ case $REPLY in
 [Yy]* ) 
     echo 'Requires root privileges:'
     # Feel free to change to whatever suits your preferences.
-    sudo apt-get install -y --no-install-recommends darktable easytag filezilla gnome-tweak-tool gpick grsync nautilus-dropbox nautilus-open-terminal pyrenamer sparkleshare xchat vlc
+    sudo apt-get install -y --no-install-recommends easytag filezilla gpick grsync nautilus-dropbox pyrenamer xchat vlc
     echo 'Done.'
     main
     ;;
@@ -121,12 +117,7 @@ case $REPLY in
     openssh-server
     p7zip-full
     ppa-purge
-    samba
-    ssh
-    symlinks
-    synaptic
-    virt-manager
-    zsync'
+    ssh'
     echo ''
     read -p 'Proceed? (Y)es, (N)o : ' REPLY
     case $REPLY in
@@ -197,94 +188,6 @@ case $REPLY in
     clear && echo 'Not an option, try again.' && development;;
 esac
 }
-
-
-# INSTALL GNOME COMPONENTS
-function gnome {
-echo ''
-echo '1. Add GNOME3 PPA?'
-echo '2. Add GNOME3 Staging PPA?'
-echo '3. Install GNOME Shell?'
-echo '4. Configure GNOME Shell Specific Settings?'
-echo 'r. Return.'
-echo ''
-read -p 'What would you like to do? (Enter your choice) : ' REPLY
-case $REPLY in
-# Add GNOME3 PPA
-1)
-    echo 'Adding GNOME3 PPA to software sources...'
-    echo 'Requires root privileges:'
-    sudo add-apt-repository -y ppa:gnome3-team/gnome3
-    echo 'Updating repository information...'
-    sudo apt-get update -qq
-    echo 'Performing system upgrade...'
-    sudo apt-get dist-upgrade -y
-    echo 'Done.'
-    echo ''
-    gnome
-    ;;
-# Add GNOME3 Staging PPA
-2)
-    echo 'Adding GNOME3 Staging PPA to software sources...'
-    echo 'Requires root privileges:'
-    sudo add-apt-repository -y ppa:gnome3-team/gnome3-staging
-    echo 'Updating repository information...'
-    sudo apt-get update -qq
-    echo 'Performing system upgrade...'
-    sudo apt-get dist-upgrade -y
-    echo 'Done.'
-    echo ''
-    gnome
-    ;;
-# Install GNOME Shell
-3)
-    echo 'Installing GNOME Shell...'
-    echo 'Requires root privileges:'
-    sudo apt-get install -y gnome-shell
-    echo 'Done.'
-    echo ''
-    gnome
-    ;;
-# Configure Shell Specific Settings
-4)
-    # Font Sizes
-    echo 'Setting font preferences...'
-    echo 'Requires the "Cantarell" font.'
-    PACKAGE=$(dpkg-query -W --showformat='${Status}\n' fonts-cantarell | grep "install ok installed")
-    echo "Checking if installed..."
-    if [ "" == "$PACKAGE" ]; then
-        echo 'Cantarell is not installed.'
-        echo 'Installing... '
-        echo 'Requires root privileges:'
-        sudo apt-get install -y fonts-cantarell
-        echo 'Done. '
-    else
-        echo 'Cantarell is installed, proceeding... '
-    fi
-    gsettings set org.gnome.desktop.interface text-scaling-factor '1.0'
-    gsettings set org.gnome.desktop.interface document-font-name 'Cantarell 10'
-    gsettings set org.gnome.desktop.interface font-name 'Cantarell 10'
-    gsettings set org.gnome.nautilus.desktop font 'Cantarell 10'
-    gsettings set org.gnome.desktop.wm.preferences titlebar-font 'Cantarell Bold 10'
-    gsettings set org.gnome.settings-daemon.plugins.xsettings antialiasing 'rgba'
-    gsettings set org.gnome.settings-daemon.plugins.xsettings hinting 'slight'
-    echo 'Done. '
-    # GNOME Shell Settings
-    echo 'Setting GNOME Shell window button preferences...'
-    gsettings set org.gnome.shell.overrides button-layout 'close:'
-    echo 'Done. '
-    echo ''
-    gnome
-    ;;
-# Return
-[Rr]*) 
-    clear && main;;
-# Invalid choice
-* ) 
-    clear && echo 'Not an option, try again.' && gnome;;
-esac
-}
-
 
 # INSTALL UBUNTU RESTRICTED EXTRAS
 function codecinstall {
@@ -390,11 +293,8 @@ echo ''
 echo 'Installing design tools...'
 echo ''
 echo 'Current package list:
-fontforge
-fontforge-extras
 gimp
 gimp-plugin-registry
-icontool
 imagemagick
 inkscape'
 echo ''
@@ -404,7 +304,7 @@ case $REPLY in
 [Yy]* ) 
     echo 'Requires root privileges:'
     # Feel free to change to whatever suits your preferences.
-    sudo apt-get install -y fontforge fontforge-extras gimp gimp-plugin-registry icontool imagemagick inkscape
+    sudo apt-get install -y gimp gimp-plugin-registry imagemagick inkscape
     echo 'Done.'
     main
     ;;
@@ -473,67 +373,6 @@ cd
 echo ''
 echo 'Installation of Sublime Text 2 complete.'
 thirdparty
-}
-
-
-# INSTALL PANTHEON SHELL
-function pantheon {
-echo ''
-echo '1. Add elementary OS daily PPA?'
-echo '2. Install Pantheon Shell?'
-echo '3. Configure Pantheon Specific Settings?'
-echo 'r. Return.'
-echo ''
-read -p 'What would you like to do? (Enter your choice) : ' REPLY
-case $REPLY in
-# Add elementary OS daily PPA
-1)
-    echo 'Adding elementary OS daily to software sources...'
-    echo 'Requires root privileges:'
-    sudo add-apt-repository -y ppa:elementary-os/daily
-    echo 'Updating repository information...'
-    sudo apt-get update -qq
-    echo 'Done.'
-    echo ''
-    pantheon
-    ;;
-# Install Pantheon Shell
-2)
-    echo 'Installing Pantheon Shell...'
-    echo 'Requires root privileges:'
-    sudo apt-get install -y gala noise pantheon-shell pantheon-wallpaper slingshot-launcher switchboard wingpanel
-    echo 'Done.'
-    echo ''
-    pantheon
-    ;;
-# Configure Shell Specific Settings
-3)
-    # Gala Animations
-    echo 'Setting Gala animations preferences...'
-    gsettings set org.pantheon.desktop.gala.animations close-duration '100'
-    gsettings set org.pantheon.desktop.gala.animations menu-duration '50'
-    gsettings set org.pantheon.desktop.gala.animations minimize-duration '100'
-    gsettings set org.pantheon.desktop.gala.animations open-duration '100'
-    echo 'Done. '
-    # Gala Hotcorners
-    echo 'Setting Gala Hotcorner preferences...'
-    gsettings set org.pantheon.desktop.gala.behaviour hotcorner-bottomleft 'show-workspace-view'
-    gsettings set org.pantheon.desktop.gala.behaviour hotcorner-topleft 'window-overview-all'
-    echo 'Done. '
-    # Slingshot preferences
-    echo 'Setting Slingshot preferences...'
-    gsettings set org.pantheon.desktop.slingshot icon-size '64'
-    echo 'Done. '
-    echo ''
-    pantheon
-    ;;
-# Return
-[Rr]*) 
-    clear && thirdparty;;
-# Invalid choice
-* ) 
-    clear && echo 'Not an option, try again.' && pantheon;;
-esac
 }
 
 
